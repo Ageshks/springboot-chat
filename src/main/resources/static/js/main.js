@@ -8,10 +8,8 @@ function connect(event) {
 }
 
 function onConnected() {
-    // Subscribe to the public topic
     stompClient.subscribe('/topic/public', onMessageReceived);
 
-    // Inform the server of the username joining
     stompClient.send("/app/chat.addUser", {}, JSON.stringify({ sender: document.querySelector('#name').value, type: 'JOIN' }));
     
     document.querySelector('.connecting').classList.add('hidden');
@@ -39,24 +37,22 @@ function sendMessage(event) {
 function onMessageReceived(payload) {
     const message = JSON.parse(payload.body);
 
-    // Display the message in the UI
     const messageElement = document.createElement('li');
     messageElement.classList.add('chat-message');
     messageElement.textContent = `${message.sender}: ${message.content}`;
     document.querySelector('#messageArea').appendChild(messageElement);
 
-    // **Send Notification**
     if (Notification.permission === 'granted') {
         new Notification(`New message from ${message.sender}`, {
             body: message.content,
-            icon: '/path/to/icon.png' // Optional icon
+            icon: '/path/to/icon.png' 
         });
     } else if (Notification.permission !== 'denied') {
         Notification.requestPermission().then(permission => {
             if (permission === 'granted') {
                 new Notification(`New message from ${message.sender}`, {
                     body: message.content,
-                    icon: '/path/to/icon.png' // Optional icon
+                    icon: '/path/to/icon.png' 
                 });
             }
         });
