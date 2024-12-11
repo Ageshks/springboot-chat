@@ -4,3 +4,4 @@ it has chat application and also notification enabled
 -  notification while a new message is recived
 
 -  while the user joined the users gets the notification
+##### the application is under development 
